@@ -9,26 +9,45 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {
+            id: null,
+            username: null,
+            usertype: null,
+            accessToken: null,
             SignedIn: false
         }
     }
 
-    RouteChange = (route) => {
+    RouteChange = (route, id, username, usertype, accessToken) => {
         if (route === 'signin') {
-            this.setState({ SignedIn: true });
+            this.setState({
+                id: id,
+                username: username,
+                usertype: usertype,
+                accessToken: accessToken,
+                SignedIn: true
+            });
         }
         else if (route === 'signout') {
-            this.setState({ SignedIn: false })
+            this.setState({
+                id: null,
+                username: null,
+                usertype: null,
+                accessToken: null,
+                SignedIn: false
+            })
         }
     }
 
-    onLoginAttempt = () => {
-        this.RouteChange('signin');
+    onLoginAttempt = (id, username, usertype, accessToken) => {
+        this.RouteChange('signin', id, username, usertype, accessToken);
         console.log('signin');
     }
 
     onLogout = () => {
         this.RouteChange('signout');
+        fetch('/signout', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        })
         console.log('signout');
     }
 
@@ -51,9 +70,9 @@ class App extends React.Component {
                         return (
                             <>
                                 <header className='sb-nav-fixed'>
-                                    <NavBarTop Logout={this.onLogout}/>
+                                    <NavBarTop Logout={this.onLogout} />
                                 </header>
-                                <section style={{padding:'70px'}}>
+                                <section style={{ padding: '70px' }}>
                                     <DashBoardContent />
                                 </section>
                             </>
