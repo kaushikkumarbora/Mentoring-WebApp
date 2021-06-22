@@ -18,7 +18,7 @@ const signin = (req, res) => {
     }
 
     if(!req.body.username){
-        return req.status(404).json({message: 'Username field empty'});
+        return res.status(404).json({message: 'Username field empty'});
     }
 
     User.findOne({

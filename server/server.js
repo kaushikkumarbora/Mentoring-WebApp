@@ -34,7 +34,7 @@ app.get('/mentor/:mentorID', [authJwt.verifyToken, authJwt.verifyUsertype], meth
 
 app.get('/mentee/:menteeID', [authJwt.verifyToken, authJwt.verifyUsertype], method.getMenteebyID);
 
-app.get('/chat', [authJwt.verifyToken, authJwt.verifyUsertype], method.getChat);
+app.get('/chat/:chatID', [authJwt.verifyToken, authJwt.verifyUsertype], method.getChat);
 
 app.post('/chatsend/:chatID', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendMessage);
 

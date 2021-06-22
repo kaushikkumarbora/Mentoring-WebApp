@@ -1,15 +1,15 @@
 const jwt = require("jsonwebtoken");
 const config = require("./secret");
-//const db = require("../../database/database");
-// const Mentee = db.Mentee;
-// const Mentor = db.Mentor;
+const db = require("../../database/database");
+const Mentee = db.Mentee;
+const Mentor = db.Mentor;
 
 verifyMentee = (req, res) => {
 
 }
 
 verifyMentor = (req, res) => {
-
+    Mentor.
 }
 
 verifyToken = (req, res, next) => {
