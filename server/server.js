@@ -3,12 +3,11 @@ const path = require('path');
 const fs = require('fs')
 
 const method = require('./methods/method')
-//const database = require('./database/database');
+const database = require('./database/database');
 const authJwt = require('./methods/auth/authJwt')
 
 const app = express();
-//database.sequelize.sync({ force: true });
-
+database.sequelize.sync();
 
 const filepath = path.join(__dirname, '../client/build/');
 console.log('path: ' + filepath);

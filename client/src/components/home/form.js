@@ -21,7 +21,7 @@ class SigninForm extends React.Component {
 
             var postBody = {
                 // TODO change to username later
-                id: document.getElementById('floatingInput').value,
+                username: document.getElementById('floatingInput').value,
                 usertype: document.getElementById('floatingSelect').value,
                 password: document.getElementById('floatingPassword').value,
             };

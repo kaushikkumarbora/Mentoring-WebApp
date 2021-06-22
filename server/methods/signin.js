@@ -1,4 +1,4 @@
-//const db = require("../database/database");
+const db = require("../database/database");
 const config = require("./auth/secret");
 
 var jwt = require("jsonwebtoken");
@@ -7,23 +7,25 @@ var User;
 const signin = (req, res) => {
     console.log('signin', req.body);
     // TODO fix when database is set
-    // if (req.body.usertype === 'Mentor') {
-    //     User = db.Mentor;
-    // }
-    // else if (req.body.usertype === 'Mentee') {
-    //     User = db.Mentee
-    // }
-    // else {
-    //     return res.status(404).json({ message: "User Not found." });
-    // }
-    // User.findOne({
-    //     where: {
-    //         username: req.body.username
-    //     }
-    // })
-    // .then
+    if (req.body.usertype === 'Mentor') {
+        User = db.mentor;
+    }
+    else if (req.body.usertype === 'Mentee') {
+        User = db.mentee;
+    }
+    else {
+        return res.status(404).json({ message: "User Not found." });
+    }
 
-    var func = (user => {
+    if(!req.body.username){
+        return req.status(404).json({message: 'Username field empty'});
+    }
+
+    User.findOne({
+        where: {
+            username: req.body.username
+        }
+    }).then(user => {
         if (!user) {
             return res.status(404).json({ message: "User Not found." });
         }
@@ -53,14 +55,14 @@ const signin = (req, res) => {
             usertype: req.body.usertype,
             accessToken: token
         });
-    });
+    })
 
-    try { func({ id: '1', password: '123123234' }) }
-    catch {
+        // try { func({ id: '1', password: '123123234' }) }
+        .catch (
         err => {
             return res.status(500).json({ message: err.message });
         }
-    };
+        );
 };
 
 module.exports = signin;
