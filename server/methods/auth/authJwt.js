@@ -9,7 +9,7 @@ verifyMentee = (req, res) => {
 }
 
 verifyMentor = (req, res) => {
-    Mentor.
+    //Mentor.
 }
 
 verifyToken = (req, res, next) => {

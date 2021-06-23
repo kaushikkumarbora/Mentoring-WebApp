@@ -1,49 +1,50 @@
 var DataTypes = require("sequelize").DataTypes;
-var _chat = require("./chat");
-var _chat_period = require("./chat_period");
+var _chat_mapping = require("./chat_mapping");
 var _department = require("./department");
 var _mentee = require("./mentee");
 var _mentor = require("./mentor");
+var _mentor_mentee = require("./mentor_mentee");
+var _mentor_register_info = require("./mentor_register_info");
 var _message = require("./message");
-var _recuse = require("./recuse");
-var _register = require("./register");
 var _today_messages = require("./today_messages");
 
 function initModels(sequelize) {
-  var chat = _chat(sequelize, DataTypes);
-  var chat_period = _chat_period(sequelize, DataTypes);
+  var chat_mapping = _chat_mapping(sequelize, DataTypes);
   var department = _department(sequelize, DataTypes);
   var mentee = _mentee(sequelize, DataTypes);
   var mentor = _mentor(sequelize, DataTypes);
+  var mentor_mentee = _mentor_mentee(sequelize, DataTypes);
+  var mentor_register_info = _mentor_register_info(sequelize, DataTypes);
   var message = _message(sequelize, DataTypes);
-  var recuse = _recuse(sequelize, DataTypes);
-  var register = _register(sequelize, DataTypes);
   var today_messages = _today_messages(sequelize, DataTypes);
 
-  chat_period.belongsTo(chat, { as: "id_chat", foreignKey: "id"});
-  chat.hasMany(chat_period, { as: "chat_periods", foreignKey: "id"});
-  message.belongsTo(chat, { as: "chat", foreignKey: "chat_id"});
-  chat.hasMany(message, { as: "messages", foreignKey: "chat_id"});
+  chat_mapping.belongsToMany(chat_mapping, { as: 'date_chat_mappings', through: message, foreignKey: "chat_id", otherKey: "date" });
+  chat_mapping.belongsToMany(chat_mapping, { as: 'chat_id_chat_mappings', through: message, foreignKey: "date", otherKey: "chat_id" });
+  message.belongsTo(chat_mapping, { as: "chat", foreignKey: "chat_id"});
+  chat_mapping.hasMany(message, { as: "messages", foreignKey: "chat_id"});
+  message.belongsTo(chat_mapping, { as: "date_chat_mapping", foreignKey: "date"});
+  chat_mapping.hasMany(message, { as: "date_messages", foreignKey: "date"});
   mentor.belongsTo(department, { as: "dept", foreignKey: "dept_id"});
   department.hasMany(mentor, { as: "mentors", foreignKey: "dept_id"});
-  chat.belongsTo(mentee, { as: "mentee", foreignKey: "mentee_id"});
-  mentee.hasMany(chat, { as: "chats", foreignKey: "mentee_id"});
-  chat.belongsTo(mentor, { as: "mentor", foreignKey: "mentor_id"});
-  mentor.hasMany(chat, { as: "chats", foreignKey: "mentor_id"});
-  recuse.belongsTo(mentor, { as: "mentor", foreignKey: "mentor_id"});
-  mentor.hasMany(recuse, { as: "recuses", foreignKey: "mentor_id"});
-  register.belongsTo(mentor, { as: "mentor", foreignKey: "mentor_id"});
-  mentor.hasMany(register, { as: "registers", foreignKey: "mentor_id"});
+  chat_mapping.belongsTo(mentee, { as: "mentee", foreignKey: "mentee_id"});
+  mentee.hasMany(chat_mapping, { as: "chat_mappings", foreignKey: "mentee_id"});
+  mentor_mentee.belongsTo(mentee, { as: "mentee", foreignKey: "mentee_id"});
+  mentee.hasMany(mentor_mentee, { as: "mentor_mentees", foreignKey: "mentee_id"});
+  chat_mapping.belongsTo(mentor, { as: "mentor", foreignKey: "mentor_id"});
+  mentor.hasMany(chat_mapping, { as: "chat_mappings", foreignKey: "mentor_id"});
+  mentor_mentee.belongsTo(mentor, { as: "mentor", foreignKey: "mentor_id"});
+  mentor.hasMany(mentor_mentee, { as: "mentor_mentees", foreignKey: "mentor_id"});
+  mentor_register_info.belongsTo(mentor, { as: "mentor", foreignKey: "mentor_id"});
+  mentor.hasMany(mentor_register_info, { as: "mentor_register_infos", foreignKey: "mentor_id"});
 
   return {
-    chat,
-    chat_period,
+    chat_mapping,
     department,
     mentee,
     mentor,
+    mentor_mentee,
+    mentor_register_info,
     message,
-    recuse,
-    register,
     today_messages,
   };
 }

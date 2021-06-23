@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'chat',
+        model: 'chat_mapping',
         key: 'id'
       }
     },
@@ -23,13 +23,22 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    timestamp_mentor: {
-      type: DataTypes.DATE,
-      allowNull: false
+    time_mentor_msg: {
+      type: DataTypes.TIME,
+      allowNull: true
     },
-    timestamp_mentee: {
-      type: DataTypes.DATE,
-      allowNull: false
+    time_mentee_msg: {
+      type: DataTypes.TIME,
+      allowNull: true
+    },
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'chat_mapping',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
@@ -38,11 +47,19 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     indexes: [
       {
+        name: "fki_message_session_id_date",
+        fields: [
+          { name: "chat_id" },
+          { name: "date" },
+        ]
+      },
+      {
         name: "message_pkey",
         unique: true,
         fields: [
-          { name: "chat_id" },
           { name: "id" },
+          { name: "chat_id" },
+          { name: "date" },
         ]
       },
     ]
