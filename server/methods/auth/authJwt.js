@@ -1,15 +1,35 @@
 const jwt = require("jsonwebtoken");
 const config = require("./secret");
 const db = require("../../database/database");
-const Mentee = db.Mentee;
-const Mentor = db.Mentor;
+const mentee = db.mentee;
+const mentor = db.mentor;
 
-verifyMentee = (req, res) => {
+verifyMentee = (req, res, next) => {
+    
+    mentee.findByPk(req.userId)
+        .then(user => next())
+        .catch(
+            err => {
+                return res.status(401).json({
+                    message: "Unauthorized!"
+                });
+            }
+        );
 
 }
 
-verifyMentor = (req, res) => {
-    //Mentor.
+verifyMentor = (req, res, next) => {
+
+    mentor.findByPk(req.userId)
+        .then(user => next())
+        .catch(
+            err => {
+                return res.status(401).json({
+                    message: "Unauthorized!"
+                });
+            }
+        );
+
 }
 
 verifyToken = (req, res, next) => {
@@ -27,25 +47,25 @@ verifyToken = (req, res, next) => {
                 message: "Unauthorized!"
             });
         }
+        console.log(decoded);
         req.userId = decoded.id;
-        req.usertype = decoded.usertype;
+        req.usertype = decoded.type.toLowerCase();
         next();
     });
 };
 
 verifyUsertype = (req, res, next) => {
-    if (req.body.usertype === 'mentor') {
-        verifyMentor(req, res);
+    if (req.usertype === 'mentor') {
+        verifyMentor(req, res, next);
     }
-    else if (req.body.usertype === 'mentee') {
-        verifyMentee(req, res);
+    else if (req.usertype === 'mentee') {
+        verifyMentee(req, res, next);
     }
     else {
         return res.status(403).json({
             message: "Invalid usertype!"
         });
     }
-    next();
 }
 
 const authJwt = {

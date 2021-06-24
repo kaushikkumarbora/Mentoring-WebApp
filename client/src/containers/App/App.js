@@ -61,7 +61,7 @@ class App extends React.Component {
                                 <NavBar />
                                 <section>
                                     <ContentLanding />
-                                    <SigninForm Login={this.onLoginAttempt} />
+                                    <SigninForm Login={this.onLoginAttempt} usertype={this.state.usertype}/>
                                 </section>
                             </div>
                         )
@@ -73,7 +73,7 @@ class App extends React.Component {
                                     <NavBarTop Logout={this.onLogout} />
                                 </header>
                                 <section style={{ padding: '70px' }}>
-                                    <DashBoardContent />
+                                    <DashBoardContent accessToken={this.state.accessToken} usertype={this.state.usertype}/>
                                 </section>
                             </>
                         )

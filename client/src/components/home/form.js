@@ -1,5 +1,5 @@
 import React from "react";
-import "../landing.css"
+import "../landing.css";
 
 class SigninForm extends React.Component {
 
@@ -34,22 +34,22 @@ class SigninForm extends React.Component {
                 },
                 body: JSON.stringify(postBody) // body data type must match "Content-Type" header
             }).then(res => res.json())
-            .then(data => {
-                if (data.status === '200') {
-                    form[0].classList.add('is-valid');
-                    form[1].classList.add('is-valid');
-                    document.body.removeAttribute('class');
-                    document.body.removeAttribute('style');
-                    document.body.removeAttribute('data-bs-padding-right');
-                    let temp = document.getElementsByClassName('modal-backdrop');
-                    temp[0].parentNode.removeChild(temp[0]);
-                    this.props.Login(data.id, data.username, data.usertype, data.accessToken);
-                }
-                else {
-                    form[0].classList.add('is-invalid');
-                    form[1].classList.add('is-invalid');
-                }
-            });
+                .then(data => {
+                    if (data.status === '200') {
+                        form[0].classList.add('is-valid');
+                        form[1].classList.add('is-valid');
+                        document.body.removeAttribute('class');
+                        document.body.removeAttribute('style');
+                        document.body.removeAttribute('data-bs-padding-right');
+                        let temp = document.getElementsByClassName('modal-backdrop');
+                        temp[0].parentNode.removeChild(temp[0]);
+                        this.props.Login(data.id, data.username, data.usertype, data.accessToken);
+                    }
+                    else {
+                        form[0].classList.add('is-invalid');
+                        form[1].classList.add('is-invalid');
+                    }
+                });
         }
     }
 

@@ -7,10 +7,10 @@ var User;
 const signin = (req, res) => {
     console.log('signin', req.body);
     // TODO fix when database is set
-    if (req.body.usertype === 'Mentor') {
+    if (req.body.usertype.toLowerCase() === 'mentor') {
         User = db.mentor;
     }
-    else if (req.body.usertype === 'Mentee') {
+    else if (req.body.usertype.toLowerCase() === 'mentee') {
         User = db.mentee;
     }
     else {
