@@ -1,7 +1,14 @@
-import { Route, BrowserRouter } from 'react-router-dom'
 import '../landing.css'
 
-function NavBarTop({ Logout }) {
+function NavBarTop({ LogoutCallback , accessToken}) {
+    const Logout = (event) => {
+        fetch('/signout', {
+            method: 'POST',
+            headers: {
+                'x-access-token':accessToken,
+            }
+        }).then(() => LogoutCallback());
+    }
     return (
         // <!-- Navigation-->
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">

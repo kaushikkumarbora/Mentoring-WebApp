@@ -1,9 +1,9 @@
 import React from "react";
 import "../landing.css";
 
-class SigninForm extends React.Component {
+class Signin extends React.Component {
 
-    clickCallback = (event) => {
+    Login = (event) => {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var [form] = document.querySelectorAll('.needs-validation');
 
@@ -43,7 +43,7 @@ class SigninForm extends React.Component {
                         document.body.removeAttribute('data-bs-padding-right');
                         let temp = document.getElementsByClassName('modal-backdrop');
                         temp[0].parentNode.removeChild(temp[0]);
-                        this.props.Login(data.id, data.username, data.usertype, data.accessToken);
+                        this.props.LoginCallback(data.id, data.username, data.usertype, data.accessToken);
                     }
                     else {
                         form[0].classList.add('is-invalid');
@@ -75,16 +75,17 @@ class SigninForm extends React.Component {
                                         placeholder="Password" />
                                     <label htmlFor="floatingPassword">Password</label>
                                 </div>
-                                <select class="form-control form-control-sm" id="floatingSelect" style={{ appearance: 'button' }}>
+                                <select className="form-control form-control-sm" id="floatingSelect" style={{ appearance: 'button' }}>
                                     <option>Mentor</option>
                                     <option>Mentee</option>
+                                    <option>Guardian</option>
                                 </select>
                                 <div className="checkbox mb-3">
                                     <label>
                                         <input type="checkbox" value="remember-me" /> Remember me
                                     </label>
                                 </div>
-                                <button className="w-50 btn btn-primary btn-primary" type="button" onClick={this.clickCallback}>Sign in</button>
+                                <button className="w-50 btn btn-primary btn-primary" type="button" onClick={this.Login}>Sign in</button>
                                 <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
                             </form>
                         </div>
@@ -95,4 +96,4 @@ class SigninForm extends React.Component {
     }
 }
 
-export default SigninForm;
+export default Signin;

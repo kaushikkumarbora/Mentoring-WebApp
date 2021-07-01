@@ -1,11 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('message', {
-    id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      primaryKey: true
-    },
     chat_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -39,6 +34,12 @@ module.exports = function(sequelize, DataTypes) {
         model: 'chat_mapping',
         key: 'id'
       }
+    },
+    id: {
+      autoIncrement: true,
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      primaryKey: true
     }
   }, {
     sequelize,
@@ -57,9 +58,9 @@ module.exports = function(sequelize, DataTypes) {
         name: "message_pkey",
         unique: true,
         fields: [
-          { name: "id" },
           { name: "chat_id" },
           { name: "date" },
+          { name: "id" },
         ]
       },
     ]

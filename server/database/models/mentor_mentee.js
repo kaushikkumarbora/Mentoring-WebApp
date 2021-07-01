@@ -29,7 +29,11 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'mentor_mentee',
+        key: 'id'
+      }
     }
   }, {
     sequelize,

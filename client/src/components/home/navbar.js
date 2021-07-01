@@ -13,6 +13,7 @@ function NavBar() {
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item active"><div className="nav-link" href="#Home" data-bs-toggle="collapse">Home</div></li>
                         <li className="nav-item"><div className="nav-link" data-bs-toggle="modal" data-bs-target="#signin">Sign In</div></li>
+                        <li className="nav-item"><div className="nav-link" data-bs-toggle="modal" data-bs-target="#register">Register</div></li>
                         <li className="nav-item"><div className="nav-link" href="#About" data-bs-toggle="collapse">About</div></li>
                     </ul>
                 </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Chat from './chat';
 import {Modal, Button} from 'react-bootstrap';
+import ChatShell from '../../containers/shell/ChatShell'
 
 function ChatWrapper(props) {
     const [show, setShow] = useState(false);
@@ -12,7 +12,7 @@ function ChatWrapper(props) {
                 <Modal.Header closeButton={{}}>
                     <Modal.Title>Chat - {props.first_name} {props.last_name} - {props.start_date}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body><Chat /></Modal.Body>
+                <Modal.Body><ChatShell /></Modal.Body>
             </Modal>
         </>
     )
