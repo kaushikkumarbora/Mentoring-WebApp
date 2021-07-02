@@ -36,6 +36,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'department',
         key: 'id'
       }
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   }, {
     sequelize,

@@ -21,6 +21,25 @@ export const filteredUsers = (subset) => ({
     }
 })
 
+export const feedbacksLoaded = (feedbacks) => ({
+    type: actionTypes.FEEDBACK_LOADED,
+    payload: {
+        feedbacks
+    }
+})
+
+export const fetchFeedbacks = (accessToken) => {
+    return (dispatch) => {
+        return fetch('/feedback', {
+            method: 'GET',
+            headers: {
+                'x-access-token': accessToken,
+            }
+        }).then(data => data.json())
+            .then(feedbacks => dispatch(feedbacksLoaded(feedbacks)));
+    }
+};
+
 export const fetchChat = (accessToken, usertype) => {
     return (dispatch) => {
         return fetch('/chat/0', {
@@ -35,10 +54,10 @@ export const fetchChat = (accessToken, usertype) => {
                         return chat = {
                             id: chat.id,
                             imageUrl: Image,
-                            imageAlt: chat.mentee.first_name + ' ' + chat.mentee.last_name,
-                            title: chat.mentee.first_name + ' ' + chat.mentee.last_name,
-                            createdAt: chat.id_mentor_mentee.start_date,
-                            end_date: chat.id_mentor_mentee.end_date,
+                            imageAlt: chat.first_name + ' ' + chat.last_name,
+                            name: chat.first_name + ' ' + chat.last_name,
+                            createdAt: chat.start_date,
+                            end_date: chat.end_date,
                             dept_name: null,
                             latestMessageText: null,
                         }
@@ -47,11 +66,11 @@ export const fetchChat = (accessToken, usertype) => {
                         return chat = {
                             id: chat.id,
                             imageUrl: Image,
-                            imageAlt: chat.mentor.first_name + ' ' + chat.mentor.last_name,
-                            title: chat.mentor.first_name + ' ' + chat.mentor.last_name,
-                            createdAt: chat.id_mentor_mentee.start_date,
-                            end_date: chat.id_mentor_mentee.end_date,
-                            dept_name: chat.mentor.dept.name,
+                            imageAlt: chat.first_name + ' ' + chat.last_name,
+                            name: chat.first_name + ' ' + chat.last_name,
+                            createdAt: chat.start_date,
+                            end_date: chat.end_date,
+                            dept_name: chat.dept_name,
                             latestMessageText: null,
                         }
                     }
@@ -89,10 +108,13 @@ export const fetchUsers = (accessToken, usertype) => {
                             id: user.id,
                             name: user.first_name + ' ' + user.last_name,
                             usertype: 'Mentor',
-                            department: user.dept.name
+                            dept_name: user.dept_name,
+                            start_date: user.date_register,
+                            end_date: user.date_recuse,
+                            dob: user.dob
                         }
                     }
-                    else {
+                    else if (usertype === 'Mentee') {
                         return user = {
                             id: user.id,
                             name: user.first_name + ' ' + user.last_name,

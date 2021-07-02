@@ -5,15 +5,36 @@ import "../landing.css";
 class RegisterIn extends React.Component {
 
     closeModal = () => {
-        $('#register').modal('hide');
+
+        $("#register").find(':input').each(function() {
+            switch(this.type) {
+                case 'password':
+                case 'text':
+                case 'textarea':
+                case 'file':
+                case 'select-one':
+                case 'select-multiple':
+                case 'date':
+                case 'number':
+                case 'tel':
+                case 'email':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+                    break;
+            }
+        });
+        $('#btnTocloseRegister').click();
     }
 
     onRegistration = (event) => {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var form = document.querySelectorAll('.needs-validation');
         form = form[1];
-        var password = document.getElementById('floatingPassword');
-        console.log(form);
+        var password =form[1].value;
+        var confirmpassword = form[2].value;
 
         //Validation
         if (!form.checkValidity()) {
@@ -25,10 +46,14 @@ class RegisterIn extends React.Component {
             form[4].classList.add('is-invalid');
             form[5].classList.add('is-invalid');
         }
-        else if (password.value !== document.getElementById('floatingConfirmPassword').value) {
+        else if (password !== confirmpassword) {
             event.stopPropagation()
+            form[0].classList.remove('is-invalid');
             form[1].classList.add('is-invalid');
             form[2].classList.add('is-invalid');
+            form[3].classList.remove('is-invalid');
+            form[4].classList.remove('is-invalid');
+            form[5].classList.remove('is-invalid');
         }
         else {
             form[0].classList.remove('is-invalid');
@@ -42,12 +67,12 @@ class RegisterIn extends React.Component {
 
             var postBody = {
                 // TODO change to username later
-                first_name: document.getElementById('floatingFirst').value,
-                last_name: document.getElementById('floatingLast').value,
-                other_info: document.getElementById('floatingOther').value,
-                username: document.getElementById('floatingUsername').value,
-                usertype: document.getElementById('floatingSelect').value,
-                password: document.getElementById('floatingPassword').value,
+                first_name: form[3].value,
+                last_name: form[4].value,
+                other_info: form[5].value,
+                username: form[0].value,
+                usertype: form[6].value,
+                password: form[1].value,
             };
 
             fetch(recipeUrl, {
@@ -58,7 +83,6 @@ class RegisterIn extends React.Component {
                 body: JSON.stringify(postBody) // body data type must match "Content-Type" header
             }).then(res => res.json())
                 .then(data => {
-                    form.map((element) => element.classList.add('is-valid'));
                     if (data.status === '200') {
                         this.closeModal();
                     }
@@ -93,7 +117,7 @@ class RegisterIn extends React.Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLabel">Register</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" id='btnTocloseRegister' aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <form className="form-signin needs-validation">

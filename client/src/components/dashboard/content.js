@@ -13,23 +13,19 @@ const DashBoardContent = ({ accessToken, usertype }) => {
                 <HomeShell accessToken={accessToken} usertype={usertype} />
             </Tab>
             <Tab eventKey="report" title="Report">
-                <div>Report</div>
-                <Report />
+                <Report accessToken={accessToken}/>
             </Tab>
             <Tab eventKey="feedback" title="Feedback">
-                <div>Feedback</div>
-                <Feedback />
+                <Feedback accessToken={accessToken}/>
             </Tab>
             <Tab eventKey="search" title={(usertype === 'Mentor') ? 'Mentee' : 'Mentor'}>
-                <div>Search</div>
                 <SearchShell accessToken={accessToken} usertype={usertype}/>
             </Tab>
             <Tab eventKey="application" title="Application">
                 <div>Application</div>
             </Tab>
             <Tab eventKey="events" title="Events">
-                <div>Events</div>
-                <Event />
+                <Event accessToken={accessToken}/>
             </Tab>
             <Tab eventKey="contact" title="Contact" disabled>
                 <div>Contact</div>

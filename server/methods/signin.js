@@ -29,7 +29,9 @@ const signin = (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User Not found." });
         }
-
+        if (user.disabled) {
+            return res.status(404).json({ message: "User Not found." });
+        }
         // let passwordIsValid = user.validatePassword(
         //     req.body.password,
         //     user.password

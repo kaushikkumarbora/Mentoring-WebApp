@@ -21,9 +21,9 @@ class Signin extends React.Component {
 
             var postBody = {
                 // TODO change to username later
-                username: document.getElementById('floatingInput').value,
-                usertype: document.getElementById('floatingSelect').value,
-                password: document.getElementById('floatingPassword').value,
+                username: form[0].value,
+                usertype: form[2].value,
+                password: form[1].value,
             };
 
             fetch(recipeUrl, {

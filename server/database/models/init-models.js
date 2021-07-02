@@ -60,6 +60,8 @@ function initModels(sequelize) {
   mentor.hasMany(report, { as: "reports", foreignKey: "mentor_id"});
   mentor_mentee.belongsTo(mentor_mentee, { as: "id_mentor_mentee", foreignKey: "id"});
   mentor_mentee.hasOne(mentor_mentee, { as: "mentor_mentee", foreignKey: "id"});
+  mentor_register_info.belongsTo(mentor_register_info, { as: "id_mentor_register_info", foreignKey: "id"});
+  mentor_register_info.hasOne(mentor_register_info, { as: "mentor_register_info", foreignKey: "id"});
 
   return {
     chat_mapping,

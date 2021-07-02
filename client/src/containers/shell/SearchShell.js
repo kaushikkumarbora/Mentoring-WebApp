@@ -7,16 +7,18 @@ import React from 'react';
 class SearchShell extends React.Component {
 
     componentDidMount() {
-        this.props.fetchUsers(this.props.accessToken, this.props.usertype);
+        this.props.fetchUsers(this.props.accessToken, (this.props.usertype === 'Mentor')?'Mentee':'Mentor');
     }
 
-    onInputChange(event) {
+    onInputChange = (event) => {
         window.scrollTo(0, 0);
         if(event.target.value.length !== 0){
-            let filtered = Array.filter(this.props.users, user => user.name.includes(event.target.value.toLowerCase()));
+            var filtered = this.props.users.filter( user => user.name.toLowerCase().includes(event.target.value.toLowerCase()));
             this.props.filteredUsers(filtered);
         }
-        this.props.filteredUsers(this.props.users);
+        else{
+            this.props.filteredUsers(this.props.users);
+        }
     }
 
     render() {

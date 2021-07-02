@@ -24,15 +24,27 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false
     },
     end_time: {
-      type: DataTypes.DATE,
-      allowNull: false
+      type: DataTypes.TIME,
+      allowNull: true
     },
     status: {
       type: DataTypes.ARRAY(DataTypes.BOOLEAN),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    venue: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    date: {
+      type: DataTypes.DATEONLY,
       allowNull: false
     }
   }, {

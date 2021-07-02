@@ -30,13 +30,25 @@ app.post('/signin', method.signIn);
 
 app.post('/signout', method.signOut);
 
+app.post('/register', method.register);
+
 app.get('/mentor/:mentorID', [authJwt.verifyToken, authJwt.verifyUsertype], method.getMentorbyID);
 
 app.get('/mentee/:menteeID', [authJwt.verifyToken, authJwt.verifyUsertype], method.getMenteebyID);
 
+app.post('/report', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendReport);
+
+app.get('/feedback', [authJwt.verifyToken, authJwt.verifyUsertype], method.Feedback.getFeedback);
+
+app.post('/feedback', [authJwt.verifyToken, authJwt.verifyUsertype], method.Feedback.sendFeedback);
+
+app.get('/event', [authJwt.verifyToken, authJwt.verifyUsertype], method.Event.getEvent);
+
+app.post('/event', [authJwt.verifyToken, authJwt.verifyUsertype], method.Event.sendEvent);
+
 app.get('/chat/:otherID', [authJwt.verifyToken, authJwt.verifyUsertype], method.getChat);
 
-app.post('/chatsend/:otherID', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendMessage);
+app.post('/message/:otherID', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendMessage);
 
 app.listen(4000);
 

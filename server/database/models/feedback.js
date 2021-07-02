@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     target_usertype: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false
     }
   }, {
     sequelize,

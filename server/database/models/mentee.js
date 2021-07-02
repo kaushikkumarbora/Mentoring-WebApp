@@ -27,6 +27,10 @@ module.exports = function(sequelize, DataTypes) {
     dob: {
       type: DataTypes.DATEONLY,
       allowNull: true
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   }, {
     sequelize,
