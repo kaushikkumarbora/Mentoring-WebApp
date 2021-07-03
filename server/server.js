@@ -46,9 +46,13 @@ app.get('/event', [authJwt.verifyToken, authJwt.verifyUsertype], method.Event.ge
 
 app.post('/event', [authJwt.verifyToken, authJwt.verifyUsertype], method.Event.sendEvent);
 
+app.post('/event/:eventID', [authJwt.verifyToken, authJwt.verifyUsertype], method.Event.approveEvent);
+
 app.get('/chat/:otherID', [authJwt.verifyToken, authJwt.verifyUsertype], method.getChat);
 
-app.post('/message/:otherID', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendMessage);
+app.get('/chat', [authJwt.verifyToken, authJwt.verifyUsertype], method.getChat);
+
+app.post('/message/', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendMessage);
 
 app.listen(4000);
 

@@ -4,6 +4,8 @@
     flex: 1 0 0%;
     display: flex; 
     flex-direction: column; 
+    grid-area: chat-message-list;
+    overflow: auto;
 
     #no-conversation-content {
         flex: 1 0 0%;

@@ -28,6 +28,55 @@ export const feedbacksLoaded = (feedbacks) => ({
     }
 })
 
+export const eventsLoaded = (events) => ({
+    type: actionTypes.EVENT_LOADED,
+    payload: {
+        events
+    }
+})
+
+export const fetchEvents = (accessToken, usertype) => {
+    return (dispatch) => {
+        return fetch('/event', {
+            method: 'GET',
+            headers: {
+                'x-access-token': accessToken,
+            }
+        }).then(data => data.json()).then(events => {
+            if (usertype === 'Mentor') {
+                return events.map(event => {
+                    return event = {
+                        event_id: event.id,
+                        id: event.mentee.id,
+                        name: event.mentee.first_name + ' ' + event.mentee.last_name,
+                        start_date: event.date,
+                        start_time: event.start_time,
+                        end_time: event.end_time,
+                        status: event.status,
+                        venue: event.venue,
+                        description: event.description,
+                    }
+                })
+            }
+            else if (usertype === 'Mentee') {
+                return events.map(event => {
+                    return event = {
+                        event_id: event.id,
+                        id: event.mentor.id,
+                        name: event.mentor.first_name + ' ' + event.mentor.last_name,
+                        start_date: event.date,
+                        start_time: event.start_time,
+                        end_time: event.end_time,
+                        status: event.status,
+                        venue: event.venue,
+                        description: event.description,
+                    }
+                })
+            }
+        }).then(events => dispatch(eventsLoaded(events)));
+    }
+}
+
 export const fetchFeedbacks = (accessToken) => {
     return (dispatch) => {
         return fetch('/feedback', {
@@ -49,9 +98,16 @@ export const fetchChat = (accessToken, usertype) => {
             }
         }).then(data => data.json())
             .then(chats => {
-                return chats.map(chat => {
-                    if (usertype === 'Mentor') {
+                if (usertype === 'Mentor') {
+                    return chats.map((chat, index) => {
+                        dispatch(makeMessageDetail(index, {
+                            id: chat.id,
+                            latestMessageId: null,
+                            latestMessageDate: null,
+                            messages: []
+                        }));
                         return chat = {
+                            chat_id: index,
                             id: chat.id,
                             imageUrl: Image,
                             imageAlt: chat.first_name + ' ' + chat.last_name,
@@ -59,11 +115,19 @@ export const fetchChat = (accessToken, usertype) => {
                             createdAt: chat.start_date,
                             end_date: chat.end_date,
                             dept_name: null,
-                            latestMessageText: null,
                         }
-                    }
-                    else {
+                    })
+                }
+                else {
+                    return chats.map((chat, index) => {
+                        dispatch(makeMessageDetail(index, {
+                            id: chat.id,
+                            latestMessageId: null,
+                            latestMessageDate: null,
+                            messages: []
+                        }));
                         return chat = {
+                            chat_id: index,
                             id: chat.id,
                             imageUrl: Image,
                             imageAlt: chat.first_name + ' ' + chat.last_name,
@@ -71,13 +135,52 @@ export const fetchChat = (accessToken, usertype) => {
                             createdAt: chat.start_date,
                             end_date: chat.end_date,
                             dept_name: chat.dept_name,
-                            latestMessageText: null,
                         }
-                    }
-                })
+                    })
+                }
             }).then(chats => dispatch(chatLoaded(chats)));
     }
 };
+
+export const fetchMessages = (otherid, chatid, latestMessageId, latestMessageDate, accessToken, usertype) => {
+    return (dispatch) => {
+        var url = '/chat?';
+        url += 'userID=' + otherid;
+        url += '&latestMessageDate=' + latestMessageDate;
+        url += '&latestMessageId=' + latestMessageId;
+        return fetch(url, {
+            method: 'GET',
+            headers: {
+                'x-access-token': accessToken,
+            }
+        }).then(data => data.json())
+            .then(messages => {
+                if (usertype === 'Mentor') {
+                    return messages.map((message) => {
+                        return message = {
+                            id: message.id,
+                            messageText: message.text,
+                            createdAt: message.date,
+                            time: message.time,
+                            isMyMessage: (message.message_by === 'mentor') ? true : false
+                        }
+                    })
+                }
+                else {
+                    return messages.map((message) => {
+                        return message = {
+                            id: message.id,
+                            messageText: message.text,
+                            createdAt: message.date,
+                            time: message.time,
+                            isMyMessage: (message.message_by === 'mentee') ? true : false
+                        }
+                    })
+                }
+            }).then(messages => dispatch(messagesLoaded(chatid, messages)));
+    }
+};
+
 
 export const chatLoaded = (chats) => ({
     type: actionTypes.CHAT_LOADED,
@@ -86,10 +189,45 @@ export const chatLoaded = (chats) => ({
     }
 });
 
+export const makeMessageDetail = (index, messagedetail) => ({
+    type: actionTypes.MAKE_MESSAGE_DETAIL,
+    payload: {
+        index,
+        messagedetail
+    }
+});
+
+export const addMessage = (messageText, otherID, accessToken, chatid) => {
+    return (dispatch) => {
+        return fetch('/message/',{
+            method: 'POST',
+            headers: {
+                'x-access-token': accessToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: otherID,
+                text: messageText
+            })
+        }).then(data => data.json())
+            .then(message => {
+                if(message.status === '200'){
+                    dispatch(messagesLoaded(chatid, [{
+                        id: message.id,
+                        messageText: messageText,
+                        createdAt: message.date,
+                        time: message.time,
+                        isMyMessage: true
+                    }]))
+                }
+            });
+    }
+}
+
 export const fetchUsers = (accessToken, usertype) => {
     return (dispatch) => {
         var url;
-        if(usertype === 'Mentor'){
+        if (usertype === 'Mentor') {
             url = '/mentor/0'
         }
         else {
@@ -102,8 +240,9 @@ export const fetchUsers = (accessToken, usertype) => {
             }
         }).then(data => data.json())
             .then(users => {
-                return users.map(user => {
-                    if (usertype === 'Mentor') {
+                if (usertype === 'Mentor') {
+                    return users.map(user => {
+
                         return user = {
                             id: user.id,
                             name: user.first_name + ' ' + user.last_name,
@@ -113,15 +252,17 @@ export const fetchUsers = (accessToken, usertype) => {
                             end_date: user.date_recuse,
                             dob: user.dob
                         }
-                    }
-                    else if (usertype === 'Mentee') {
+                    })
+                }
+                else if (usertype === 'Mentee') {
+                    return users.map(user => {
                         return user = {
                             id: user.id,
                             name: user.first_name + ' ' + user.last_name,
                             usertype: 'Mentee'
                         }
-                    }
-                })
+                    })
+                }
             }).then(users => dispatch(usersLoaded(users)));
     }
 };
@@ -159,21 +300,18 @@ export const newMessageAdded = textMessage => ({
     textMessage
 });
 
-export const messagesRequested = (conversationId, numberOfMessages, lastMessageId) => ({
+export const messagesRequested = (conversationId, lastMessageId) => ({
     type: actionTypes.MESSAGES_REQUESTED,
     payload: {
         conversationId,
-        numberOfMessages,
         lastMessageId
     }
 });
 
-export const messagesLoaded = (conversationId, messages, hasMoreMessages, lastMessageId) => ({
+export const messagesLoaded = (chatid, messages) => ({
     type: actionTypes.MESSAGES_LOADED,
     payload: {
-        conversationId,
         messages,
-        hasMoreMessages,
-        lastMessageId
+        chatid
     }
 });

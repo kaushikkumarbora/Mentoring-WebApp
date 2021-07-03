@@ -31,10 +31,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TIME,
       allowNull: true
     },
-    status: {
-      type: DataTypes.ARRAY(DataTypes.BOOLEAN),
-      allowNull: false
-    },
     description: {
       type: DataTypes.TEXT,
       allowNull: true
@@ -45,6 +41,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     date: {
       type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING(20),
       allowNull: false
     }
   }, {

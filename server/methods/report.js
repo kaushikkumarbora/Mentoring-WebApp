@@ -23,7 +23,7 @@ sendReport = async (req, res) => {
                     mentee_id: req.userId,
                     description: req.body.title + ' <br> ' + req.body.description,
                     target_usertype: UT_MENTOR,
-                    status: 0
+                    status: 'waiting'
                 }).then(() => res.status(200));
             }
             else {
@@ -33,7 +33,7 @@ sendReport = async (req, res) => {
     }
     else if (req.body.usertype.toLowerCase() === 'mentee') {
         mentee.findOne({
-            wehre: {
+            where: {
                 id: req.body.id
             }
         }).then((user) => {
@@ -43,7 +43,7 @@ sendReport = async (req, res) => {
                     mentee_id: req.body.id,
                     description: req.body.title + ' <br> ' + req.body.description,
                     target_usertype: UT_MENTEE,
-                    status: 0
+                    status: 'waiting'
                 }).then(() => res.status(200));
             }
             else {

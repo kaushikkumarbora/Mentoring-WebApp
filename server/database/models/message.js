@@ -10,25 +10,19 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    message_by_mentor: {
+    text: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: false
     },
-    message_by_mentee: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    time_mentor_msg: {
+    time: {
       type: DataTypes.TIME,
-      allowNull: true
-    },
-    time_mentee_msg: {
-      type: DataTypes.TIME,
-      allowNull: true
+      allowNull: false,
+      defaultValue: "CURRENT_TIME"
     },
     date: {
       type: DataTypes.DATEONLY,
       allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_DATE'),
       primaryKey: true,
       references: {
         model: 'chat_mapping',
@@ -40,6 +34,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true
+    },
+    message_by: {
+      type: DataTypes.STRING(20),
+      allowNull: false
     }
   }, {
     sequelize,

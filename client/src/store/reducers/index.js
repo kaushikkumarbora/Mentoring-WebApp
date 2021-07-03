@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 
 import conversationState from './conversations';
-import loginReducer from './login';
+import loginState from './login';
 import messagesState from './messages';
-import dashboardReducer from './dashboard';
+import dashboardState from './dashboard';
 
 export default combineReducers({
-  loginReducer,
-  dashboardReducer,
+  loginState,
+  dashboardState,
   conversationState,
   messagesState
 });

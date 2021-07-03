@@ -1,0 +1,4 @@
+.modal-custom-width > .modal-90w {
+	max-width: 90vw;
+	margin: 1.75rem auto;
+}

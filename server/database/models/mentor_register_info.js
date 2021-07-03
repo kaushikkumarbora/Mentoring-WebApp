@@ -5,19 +5,11 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
       type: DataTypes.BIGINT,
       allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'mentor_register_info',
-        key: 'id'
-      }
+      primaryKey: true
     },
     mentor_id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
-      references: {
-        model: 'mentor',
-        key: 'id'
-      }
+      allowNull: false
     },
     date_register: {
       type: DataTypes.DATEONLY,

@@ -4,7 +4,8 @@ const initialState = {
   chats: [],
   users: [],
   subset: [],
-  feedbacks: []
+  feedbacks: [],
+  events: []
 };
 
 const dashboardReducer = (state = initialState, action) => {
@@ -28,6 +29,11 @@ const dashboardReducer = (state = initialState, action) => {
     case actionTypes.FEEDBACK_LOADED: {
       const newState = { ...state };
       newState.feedbacks = action.payload.feedbacks;
+      return newState;
+    }
+    case actionTypes.EVENT_LOADED: {
+      const newState = { ...state };
+      newState.events = action.payload.events;
       return newState;
     }
     default:

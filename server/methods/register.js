@@ -1,9 +1,11 @@
+const moment = require("moment");
 const db = require("../database/database");
 
 register = (req, res) => {
     console.log('register');
     const mentor = db.mentor;
     const mentee = db.mentee;
+    const mentor_register_info = db.mentor_register_info;
     const guardian = db.guardian;
     var user;
     if (req.body.first_name === '' || req.body.username === '' || req.body.password === '') {
@@ -32,7 +34,12 @@ register = (req, res) => {
                             password: req.body.password,
                             dept_id: req.body.other_info,
                             disabled: false
-                        }).then(() => res.status(200).json({ status: '200' }));
+                        }).then((entry) => {
+                            mentor_register_info.create({
+                                mentor_id: entry.id,
+                                date_register: moment().format('YYYY-MM-DD')
+                            }).then(() => res.status(200).json({ status: '200' }))
+                        });
                     }
                     else{
                         return res.status(400).json({ message: 'Bad request' });

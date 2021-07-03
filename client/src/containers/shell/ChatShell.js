@@ -1,74 +1,39 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
-import { conversationChanged, newMessageAdded, conversationDeleted, conversationsRequested } from '../../store/actions';
-import ConversationSearch from '../../components/conversation/conversation-search/ConversationSearch';
-import NoConversations from '../../components/conversation/no-conversations/NoConversations';
-import ConversationList from '../../components/conversation/conversation-list/ConversationList';
-import NewConversation from '../../components/conversation/new-conversation/NewConversation';
-import ChatTitle from '../../components/chat-title/ChatTitle';
 import MessageList from '../message/MessageList';
 import ChatForm from '../../components/chat-form/ChatForm';
+import { addMessage } from '../../store/actions';
 
 import './ChatShell.scss';
 
-const ChatShell = ({ 
-    conversations, 
-    selectedConversation, 
-    conversationChanged,
-    onMessageSubmitted,
-    onDeleteConversation,
-    loadConversations
-}) => {
-    useEffect(() => {
-        loadConversations();
-    }, [loadConversations]);
+const ChatShell = ({ otherID, chatID, accessToken, onMessageSubmitted }) => {
 
-    let conversationContent = (
+    const sendMessage = (OtherID, AccessToken, Chatid) => (text, otherID = OtherID, accessToken = AccessToken, chatid = Chatid) => {
+        onMessageSubmitted(text, otherID, accessToken, chatid);
+    }
+
+    var conversationContent = (
         <>
-            <NoConversations></NoConversations>
+            <MessageList conversationId={chatID} accessToken={accessToken}/>
         </>
     );
 
-    if (conversations.length > 0) {
-        conversationContent = (
-            <>
-                <MessageList conversationId={selectedConversation.id} />
-            </>
-        );
-    }
-
     return (
         <div id="chat-container">
-            <ConversationSearch conversations={conversations} />
-            <ConversationList
-                onConversationItemSelected={conversationChanged}
-                conversations={conversations}
-                selectedConversation={selectedConversation} />
-            <NewConversation />
-            <ChatTitle 
-                selectedConversation={selectedConversation}
-                onDeleteConversation={onDeleteConversation} />
             {conversationContent}
-            <ChatForm 
-                selectedConversation={selectedConversation}
-                onMessageSubmitted={onMessageSubmitted} />
+            <ChatForm onMessageSubmitted={sendMessage(otherID, accessToken, chatID)} />
         </div>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        conversations: state.conversationState.conversations,
-        selectedConversation: state.conversationState.selectedConversation
+        accessToken: state.loginState.accessToken
     };
 };
-  
+
 const mapDispatchToProps = dispatch => ({
-    conversationChanged: conversationId => dispatch(conversationChanged(conversationId)),
-    onMessageSubmitted: messageText => { dispatch(newMessageAdded(messageText)); },
-    onDeleteConversation: () => { dispatch(conversationDeleted()); },
-    loadConversations: () => { dispatch(conversationsRequested())}
+    onMessageSubmitted: (messageText, otherID, accessToken, chatid) => dispatch(addMessage(messageText, otherID, accessToken, chatid))
 });
 
 export default connect(

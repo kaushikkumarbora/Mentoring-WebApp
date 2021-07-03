@@ -1,38 +1,40 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { messagesRequested } from '../../store/actions';
+
 import Message from '../../components/message/Message';
+import { fetchMessages } from '../../store/actions';
 import './MessageList.scss';
 
-const MessageList = ({ conversationId, getMessagesForConversation, loadMessages }) => {
-    const messageDetails = getMessagesForConversation(conversationId);
-    const messages = messageDetails ? messageDetails.messages: null;
-    let messageItems = null;
+class MessageList extends React.Component {
 
-    useEffect(() => {
-        if (!messageDetails) {
-            loadMessages(conversationId, null);
-        }
-    }, [messageDetails, loadMessages, conversationId])
-
-    if (messages && messages.length > 0) {
-        messageItems = messages.map((message, index) => {
-            return <Message 
-                key={index}
-                isMyMessage={message.isMyMessage}
-                message={message} />;
-        });
+    componentDidMount(){
+        this.props.fetchMessages(this.props.getMessagesForConversation(this.props.conversationId).id,this.props.conversationId, this.props.getMessagesForConversation(this.props.conversationId).latestMessageId, this.props.getMessagesForConversation(this.props.conversationId).latestMessageDate, this.props.accessToken, this.props.usertype);
     }
 
-    return (
-        <div id="chat-message-list">
-            {messageItems}
-        </div>
-    );
+    render() {
+        const messageDetails = this.props.getMessagesForConversation(this.props.conversationId);
+        const messages = messageDetails.messages;
+        let messageItems = null;
+
+        if (messages && messages.length > 0) {
+            messageItems = messages.slice(0).reverse().map((message, index) => {
+                return <Message
+                    key={index}
+                    isMyMessage={message.isMyMessage}
+                    message={message} />;
+            });
+        }
+
+        return (
+            <div id="chat-message-list">
+                {messageItems}
+            </div>
+        );
+    }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = state => {//returning messageDetails[conversationid]
     const getMessagesForConversation = conversationId => {
         return state.messagesState.messageDetails[conversationId];
     }
@@ -42,13 +44,10 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    const loadMessages = (conversationId, lastMessageId) => {
-        dispatch(messagesRequested(conversationId, 5, lastMessageId));
-    }
+const mapDispatchToProps = dispatch => ({
+    fetchMessages: (otherid, chatid, latestMessageId, latestMessageDate, accessToken, usertype) => dispatch(fetchMessages(otherid, chatid, latestMessageId, latestMessageDate, accessToken, usertype))
+});
 
-    return { loadMessages };
-}
 
 export default connect(
     mapStateToProps,

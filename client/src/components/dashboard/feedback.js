@@ -83,7 +83,7 @@ const Feedback = ({accessToken}) => {
                 </Button>
             </Alert>
             <FeedbackShell accessToken={accessToken}/>
-            <Modal show={showA} onHide={handleCloseA} dialogClassName="modal-90w">
+            <Modal show={showA} onHide={handleCloseA} dialogClassName="modal-90w" className='modal-custom-width'>
                 <Modal.Header>
                     <Modal.Title>New Feedback</Modal.Title>
                     <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseA}></button>

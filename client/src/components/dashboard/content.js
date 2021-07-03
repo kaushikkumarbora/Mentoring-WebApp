@@ -25,7 +25,7 @@ const DashBoardContent = ({ accessToken, usertype }) => {
                 <div>Application</div>
             </Tab>
             <Tab eventKey="events" title="Events">
-                <Event accessToken={accessToken}/>
+                <Event accessToken={accessToken} usertype={usertype}/>
             </Tab>
             <Tab eventKey="contact" title="Contact" disabled>
                 <div>Contact</div>

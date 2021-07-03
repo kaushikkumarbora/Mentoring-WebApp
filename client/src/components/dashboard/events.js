@@ -1,8 +1,9 @@
 import { Form, Modal, Alert, Button } from "react-bootstrap";
 import { useState } from "react";
 import "../landing.css";
+import EventShell from "../../containers/shell/EventShell";
 
-const Event = ({accessToken}) => {
+const Event = ({accessToken, usertype}) => {
 
     const [showA, setShowA] = useState(false);
     const [showB, setShowB] = useState(false);
@@ -32,7 +33,8 @@ const Event = ({accessToken}) => {
             date: form[3].value,
             time: form[4].value,
             venue: form[5].value,
-            description: form[6].value
+            description: form[6].value,
+            add: form[7].value
         };
         console.log(postBody);
 
@@ -83,7 +85,8 @@ const Event = ({accessToken}) => {
                     Close
                 </Button>
             </Alert>
-            <Modal show={showA} onHide={handleCloseA} dialogClassName="modal-90w">
+            <EventShell accessToken={accessToken} usertype={usertype}/>
+            <Modal show={showA} onHide={handleCloseA} dialogClassName="modal-90w" className='modal-custom-width'>
                 <Modal.Header>
                     <Modal.Title>Create/Edit Event</Modal.Title>
                     <button type="button" className="btn-close" aria-label="Close" onClick={handleCloseA}></button>

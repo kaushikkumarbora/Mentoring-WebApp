@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import FeedbackContent from '../../components/dashboard/feedback-content';
-import { fetchFeedbacks } from '../../store/actions'
+import EventContent from '../../components/dashboard/event-content';
+import { fetchEvents } from '../../store/actions'
 import React from 'react';
 
-class FeedbackShell extends React.Component {
+class EventShell extends React.Component {
 
     componentDidMount() {
-        this.props.fetchFeedbacks(this.props.accessToken);
+        this.props.fetchEvents(this.props.accessToken, this.props.usertype);
     }
 
     Refresh = () => {
-        this.props.fetchFeedbacks(this.props.accessToken)
+        this.props.fetchEvents(this.props.accessToken, this.props.usertype)
     }
 
     render() {
@@ -22,7 +22,7 @@ class FeedbackShell extends React.Component {
                         Refresh
                     </Button>
                 </div>
-                <FeedbackContent Feedbacks={this.props.feedbacks} />
+                <EventContent Events={this.props.events} usertype={this.props.usertype} Refresh={this.Refresh} accessToken={this.props.accessToken}/>
             </>
         );
     }
@@ -30,15 +30,15 @@ class FeedbackShell extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        feedbacks: state.dashboardState.feedbacks
+        events: state.dashboardState.events
     };
 };
 
 const mapDispatchToProps = dispatch => ({
-    fetchFeedbacks: (accessToken) => dispatch(fetchFeedbacks(accessToken)),
+    fetchEvents: (accessToken, usertype) => dispatch(fetchEvents(accessToken, usertype)),
 });
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FeedbackShell);
+)(EventShell);

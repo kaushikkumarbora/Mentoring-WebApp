@@ -49,10 +49,10 @@ const AppShell = ({
 
 const mapStateToProps = state => {
     return {
-        id: state.loginReducer.id,
-        username: state.loginReducer.username,
-        usertype: state.loginReducer.usertype,
-        accessToken: state.loginReducer.accessToken,
+        id: state.loginState.id,
+        username: state.loginState.username,
+        usertype: state.loginState.usertype,
+        accessToken: state.loginState.accessToken,
     };
 };
 

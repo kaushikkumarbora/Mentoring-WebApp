@@ -1,27 +1,37 @@
 import { actionTypes } from "../actions/actionTypes";
 
 const initialState = {
-    messageDetails: {}
+    messageDetails: []
 }
 
 const messagesReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case actionTypes.MESSAGES_LOADED:
-            const { conversationId, messages, hasMoreMessages, lastMessageId } = action.payload;
-            const currentConversationMapEntry = state.messageDetails[conversationId];
-            const newConversationMapEntry = { hasMoreMessages, lastMessageId, messages: [] };
+            const { messages, chatid } = action.payload;
+            const currentConversationMapEntry = state.messageDetails[chatid];
+            const newConversationMapEntry = { id: null, latestMessageId: null, latestMessageDate: null, messages: [] };
 
-            if (currentConversationMapEntry) {
-                newConversationMapEntry.messages = [...currentConversationMapEntry.messages];
+            newConversationMapEntry.messages = [ ...currentConversationMapEntry.messages, ...messages];
+
+            newConversationMapEntry.id = currentConversationMapEntry.id;
+            newConversationMapEntry.latestMessageDate = currentConversationMapEntry.latestMessageDate;
+            newConversationMapEntry.latestMessageId = currentConversationMapEntry.latestMessageId;
+
+            const length = newConversationMapEntry.messages.length;
+            if (length > 0) {
+                newConversationMapEntry.latestMessageDate = newConversationMapEntry.messages[length - 1].createdAt;
+                newConversationMapEntry.latestMessageId = newConversationMapEntry.messages[length - 1].id;
             }
 
-            newConversationMapEntry.messages = [...newConversationMapEntry.messages, ...messages];
-
             const newMessageDetails = { ...state.messageDetails };
-            newMessageDetails[conversationId] = newConversationMapEntry;
+            newMessageDetails[chatid] = newConversationMapEntry;
 
             return { messageDetails: newMessageDetails };
-        default: 
+        case actionTypes.MAKE_MESSAGE_DETAIL:
+            const newState = { ...state };
+            newState.messageDetails[action.payload.index] = action.payload.messagedetail;
+            return newState;
+        default:
             return state;
     }
 }

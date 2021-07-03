@@ -32,7 +32,7 @@ sendFeedback = async (req, res) => {
     }
     else if (req.body.usertype.toLowerCase() === 'mentee') {
         mentee.findOne({
-            wehre: {
+            where: {
                 id: req.body.id
             }
         }).then((user) => {

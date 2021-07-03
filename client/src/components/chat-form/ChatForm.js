@@ -13,41 +13,39 @@ const adjustTextMessage = (textMessage) => {
     return textMessage.trim();
 };
 
-const ChatForm = ({ selectedConversation, onMessageSubmitted }) => {
+const ChatForm = ({ onMessageSubmitted }) => {
     const [textMessage, setTextMessage] = useState('');
     const disableButton = isMessageEmpty(textMessage);
     let formContents = null;
     let handleFormSubmit = null;
 
-    if (selectedConversation) {
-        formContents = (
-            <>
-                <div title="Add Attachment">
-                    <AttachmentIcon />
-                </div>
-                <input 
-                    type="text" 
-                    placeholder="type a message" 
-                    value={textMessage}
-                    onChange={ (e) => { setTextMessage(e.target.value); } } />
-                <FormButton disabled={ disableButton }>Send</FormButton>
-            </>
-        );
-    
-        handleFormSubmit = (e) => {
-            e.preventDefault();
-            
-            if (!isMessageEmpty(textMessage)) {
-                onMessageSubmitted(textMessage);
-                setTextMessage('');
-            }
-        };
-    }
+    formContents = (
+        <>
+            <div title="Add Attachment">
+                <AttachmentIcon />
+            </div>
+            <input
+                type="text"
+                placeholder="type a message"
+                value={textMessage}
+                onChange={(e) => { setTextMessage(e.target.value); }} />
+            <FormButton disabled={disableButton}>Send</FormButton>
+        </>
+    );
+
+    handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        if (!isMessageEmpty(textMessage)) {
+            onMessageSubmitted(textMessage);
+            setTextMessage('');
+        }
+    };
 
     return (
         <form id="chat-form" onSubmit={handleFormSubmit}>
             {formContents}
-        </form> 
+        </form>
     );
 }
 

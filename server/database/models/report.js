@@ -27,12 +27,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    status: {
-      type: DataTypes.ARRAY(DataTypes.BOOLEAN),
-      allowNull: false
-    },
     target_usertype: {
       type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING(20),
       allowNull: false
     }
   }, {
