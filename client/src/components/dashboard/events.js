@@ -36,7 +36,6 @@ const Event = ({accessToken, usertype}) => {
             description: form[6].value,
             add: form[7].value
         };
-        console.log(postBody);
 
         fetch('/event', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.

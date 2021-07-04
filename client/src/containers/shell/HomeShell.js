@@ -3,7 +3,6 @@ import { fetchChat } from '../../store/actions';
 import { Button } from 'react-bootstrap';
 import React from 'react';
 import HomeDash from '../../components/dashboard/home';
-const Image = require('../../mentee.png');
 
 class HomeShell extends React.Component {
 

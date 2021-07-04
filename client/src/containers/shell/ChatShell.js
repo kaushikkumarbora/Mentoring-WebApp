@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import MessageList from '../message/MessageList';
 import ChatForm from '../../components/chat-form/ChatForm';
@@ -6,7 +6,7 @@ import { addMessage } from '../../store/actions';
 
 import './ChatShell.scss';
 
-const ChatShell = ({ otherID, chatID, accessToken, onMessageSubmitted }) => {
+const ChatShell = ({ otherID, chatID, accessToken, usertype, onMessageSubmitted }) => {
 
     const sendMessage = (OtherID, AccessToken, Chatid) => (text, otherID = OtherID, accessToken = AccessToken, chatid = Chatid) => {
         onMessageSubmitted(text, otherID, accessToken, chatid);
@@ -14,7 +14,7 @@ const ChatShell = ({ otherID, chatID, accessToken, onMessageSubmitted }) => {
 
     var conversationContent = (
         <>
-            <MessageList conversationId={chatID} accessToken={accessToken}/>
+            <MessageList conversationId={chatID} accessToken={accessToken} usertype={usertype}/>
         </>
     );
 
@@ -28,7 +28,8 @@ const ChatShell = ({ otherID, chatID, accessToken, onMessageSubmitted }) => {
 
 const mapStateToProps = state => {
     return {
-        accessToken: state.loginState.accessToken
+        accessToken: state.loginState.accessToken,
+        usertype: state.loginState.usertype
     };
 };
 

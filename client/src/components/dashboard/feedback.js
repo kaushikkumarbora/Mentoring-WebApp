@@ -1,4 +1,4 @@
-import { Form, Modal, Button, Alert, Table } from "react-bootstrap";
+import { Form, Modal, Button, Alert} from "react-bootstrap";
 import { useState } from "react";
 import "../landing.css";
 import FeedbackShell from "../../containers/shell/FeedbackShell";

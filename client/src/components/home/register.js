@@ -24,6 +24,7 @@ class RegisterIn extends React.Component {
                 case 'radio':
                     this.checked = false;
                     break;
+                default:
             }
         });
         $('#btnTocloseRegister').click();

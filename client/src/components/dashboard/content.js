@@ -16,7 +16,7 @@ const DashBoardContent = ({ accessToken, usertype }) => {
         Extra = (<RegisterRecuse accessToken={accessToken} />)
     }
 
-    var dashboard = (<Tabs className='customTabs' defautActiveKey="home" id="uncontrolled-tab-example">
+    var dashboard = (<><Tabs className='customTabs' defautActiveKey="home" id="uncontrolled-tab-example">
         <Tab eventKey="home" title="Home">
             <HomeShell accessToken={accessToken} usertype={usertype} />
         </Tab>
@@ -39,7 +39,7 @@ const DashBoardContent = ({ accessToken, usertype }) => {
             {Extra}
         </Tab>
 
-    </Tabs>);
+    </Tabs></>);
 
     if (usertype === 'Guardian') {
         dashboard = (<Tabs className='customTabs' defautActiveKey="home" id="uncontrolled-tab-example">
@@ -50,7 +50,9 @@ const DashBoardContent = ({ accessToken, usertype }) => {
     }
 
     return (
-        { dashboard }
+        <>
+        {dashboard}
+        </>
     )
 }
 

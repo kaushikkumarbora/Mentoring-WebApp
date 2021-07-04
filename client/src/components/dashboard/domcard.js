@@ -51,10 +51,10 @@ const DomCreateCards = (Usertype, Cardtype, Refresh = null, AccessToken = null) 
                 })
         }
 
-        var ApproveButton = (<><Button variant="primary">Show Details</Button></>);
+        var ApproveButton = (<></>);
 
-        if(cardtype === 2 && usertype === 'Mentor' && data.status != 'expired'){
-            ApproveButton = (<><Button variant="primary">Show Details</Button><Button variant="primary" onClick={approveEvent}>Approve</Button></>);
+        if(cardtype === 2 && usertype === 'Mentor' && data.status !== 'expired'){
+            ApproveButton = (<><Button variant="primary" onClick={approveEvent}>Approve</Button></>);
         }
 
         return (
@@ -92,6 +92,7 @@ const DomCreateCards = (Usertype, Cardtype, Refresh = null, AccessToken = null) 
                             }
                             else if (cardtype === 2) {
                                 return (
+                                    <>
                                     <OverlayTrigger
                                         trigger="click"
                                         key='bottom'
@@ -109,8 +110,10 @@ const DomCreateCards = (Usertype, Cardtype, Refresh = null, AccessToken = null) 
                                             </Popover>
                                         }
                                     >
-                                        {ApproveButton}
+                                        <Button variant="primary">Show Details</Button>
                                     </OverlayTrigger>
+                                    {ApproveButton}
+                                    </>
                                 )
                             }
                         })(cardtype)}

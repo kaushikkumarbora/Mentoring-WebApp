@@ -101,7 +101,7 @@ export const fetchChat = (accessToken, usertype) => {
                 if (usertype === 'Mentor') {
                     return chats.map((chat, index) => {
                         dispatch(makeMessageDetail(index, {
-                            id: chat.id,
+                            id: chat.mentee_id,
                             latestMessageId: null,
                             latestMessageDate: null,
                             messages: []
@@ -121,7 +121,7 @@ export const fetchChat = (accessToken, usertype) => {
                 else {
                     return chats.map((chat, index) => {
                         dispatch(makeMessageDetail(index, {
-                            id: chat.id,
+                            id: chat.mentor_id,
                             latestMessageId: null,
                             latestMessageDate: null,
                             messages: []
@@ -162,7 +162,7 @@ export const fetchMessages = (otherid, chatid, latestMessageId, latestMessageDat
                             messageText: message.text,
                             createdAt: message.date,
                             time: message.time,
-                            isMyMessage: (message.message_by === 'mentor') ? true : false
+                            isMyMessage: (message.message_by === 'mentor')
                         }
                     })
                 }
@@ -173,11 +173,13 @@ export const fetchMessages = (otherid, chatid, latestMessageId, latestMessageDat
                             messageText: message.text,
                             createdAt: message.date,
                             time: message.time,
-                            isMyMessage: (message.message_by === 'mentee') ? true : false
+                            isMyMessage: (message.message_by === 'mentee')
                         }
                     })
                 }
-            }).then(messages => dispatch(messagesLoaded(chatid, messages)));
+            }).then(messages => {
+                dispatch(messagesLoaded(chatid, messages))
+            });
     }
 };
 

@@ -1,3 +1,4 @@
+const moment = require("moment");
 const db = require("../database/database");
 
 
@@ -24,7 +25,7 @@ sendEvent = (req, res) => {
                         mentor_id: req.body.id,
                         mentee_id: req.userId,
                         date: req.body.date,
-                        status: { '$not': 'expired' }
+                        status: {[db.Sequelize.Op.ne]: 'expired'}
                     }
                 }).then((data) => {
                     if (data) {
@@ -73,7 +74,7 @@ sendEvent = (req, res) => {
                         mentor_id: req.userId,
                         mentee_id: req.body.id,
                         date: req.body.date,
-                        status: { '$not': 'expired' }
+                        status: {[db.Sequelize.Op.ne]: 'expired'}
                     }
                 }).then((data) => {
                     if (data) {
