@@ -28,12 +28,19 @@ sendEvent = (req, res) => {
                     }
                 }).then((data) => {
                     if (data) {
-                        data.update({
+                        event.update({
                             start_time: req.body.time,
                             venue: req.body.venue,
                             status: 'waiting',
                             description: 'Title: ' + req.body.title + '\nDescription: ' + req.body.description + '\n Additional Info: ' + req.body.add,
-                        }).then(() => res.status(200).json({ status: '200' }));
+                        },
+                            {
+                                where: {
+                                    mentor_id: req.body.id,
+                                    mentee_id: req.userId,
+                                    date: req.body.date,
+                                }
+                            }).then(() => res.status(200).json({ status: '200' }));
                     }
                     else {
                         console.log('here');
@@ -70,12 +77,19 @@ sendEvent = (req, res) => {
                     }
                 }).then((data) => {
                     if (data) {
-                        data.update({
+                        event.update({
                             start_time: req.body.time,
                             venue: req.body.venue,
                             status: 'waiting',
                             description: 'Title: ' + req.body.title + '\nDescription: ' + req.body.description + '\n Additional Info: ' + req.body.add,
-                        }).then(() => res.status(200).json({ status: '200' }));
+                        },
+                            {
+                                where: {
+                                    mentor_id: req.userId,
+                                    mentee_id: req.body.id,
+                                    date: req.body.date,
+                                }
+                            }).then(() => res.status(200).json({ status: '200' }));
                     }
                     else {
                         event.create({
@@ -104,25 +118,25 @@ getEvent = (req, res) => {
     console.log('event');
     const event = db.event;
 
-    if(req.usertype === 'mentor'){
+    if (req.usertype === 'mentor') {
         event.findAll({
-            where:{
+            where: {
                 mentor_id: req.userId
             },
             include: [{
-                model: db.mentee, as:'mentee',
-                attributes:['first_name', 'last_name', 'id']
+                model: db.mentee, as: 'mentee',
+                attributes: ['first_name', 'last_name', 'id']
             }]
         }).then((events) => res.status(200).json(events));
     }
-    else if(req.usertype === 'mentee'){
+    else if (req.usertype === 'mentee') {
         event.findAll({
-            where:{
+            where: {
                 mentee_id: req.userId
             },
             include: [{
-                model: db.mentor, as:'mentor',
-                attributes:['first_name', 'last_name', 'id']
+                model: db.mentor, as: 'mentor',
+                attributes: ['first_name', 'last_name', 'id']
             }]
         }).then((events) => res.status(200).json(events));
     }
@@ -133,28 +147,28 @@ approveEvent = (req, res) => {
     console.log('event');
     const event = db.event;
 
-    if(req.usertype === 'mentor'){
+    if (req.usertype === 'mentor') {
         event.findOne({
-            where:{
+            where: {
                 id: req.params.eventID
             },
         }).then((eventdetails) => {
-            if(eventdetails){
+            if (eventdetails) {
                 event.update({
                     status: 'approved'
-                },{
-                    where:{
+                }, {
+                    where: {
                         id: req.params.eventID
                     }
-                }).then(() => res.status(200).json({message: 'approved'}))
+                }).then(() => res.status(200).json({ message: 'approved' }))
             }
             else {
-                return res.status(400).json({message: 'Bad Request'});
+                return res.status(400).json({ message: 'Bad Request' });
             }
         });
     }
     else {
-        return res.status(401).json({message: 'Unauthorized'});
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 }
 

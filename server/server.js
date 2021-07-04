@@ -54,6 +54,12 @@ app.get('/chat', [authJwt.verifyToken, authJwt.verifyUsertype], method.getChat);
 
 app.post('/message/', [authJwt.verifyToken, authJwt.verifyUsertype], method.sendMessage);
 
+app.get('/status', [authJwt.verifyToken, authJwt.verifyUsertype], method.Status.getstatus);
+
+app.post('/status/register', [authJwt.verifyToken, authJwt.verifyUsertype], method.Status.register);
+
+app.post('/status/recuse', [authJwt.verifyToken, authJwt.verifyUsertype], method.Status.recuse);
+
 app.listen(4000);
 
 /*

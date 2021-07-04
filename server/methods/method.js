@@ -10,5 +10,6 @@ methods.sendMessage = require('./sendmessage');
 methods.Feedback = require('./feedback');
 methods.Event = require('./event');
 methods.sendReport = require('./report');
+methods.Status = require('./mentor_status');
 
 module.exports = methods;

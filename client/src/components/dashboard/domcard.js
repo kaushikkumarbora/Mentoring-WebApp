@@ -53,7 +53,7 @@ const DomCreateCards = (Usertype, Cardtype, Refresh = null, AccessToken = null) 
 
         var ApproveButton = (<><Button variant="primary">Show Details</Button></>);
 
-        if(cardtype === 2 && usertype === 'Mentor'){
+        if(cardtype === 2 && usertype === 'Mentor' && data.status != 'expired'){
             ApproveButton = (<><Button variant="primary">Show Details</Button><Button variant="primary" onClick={approveEvent}>Approve</Button></>);
         }
 
