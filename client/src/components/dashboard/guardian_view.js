@@ -20,7 +20,7 @@ const GuardianView = () => {
         document.getElementById('iframe1').contentWindow.document.write(html);
     })
     return (
-        <iframe>
+        <iframe title="Manuscript">
         </iframe>
     )
 }
