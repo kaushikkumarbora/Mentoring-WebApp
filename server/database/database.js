@@ -12,7 +12,17 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     min: dbConfig.pool.min,
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
+  },
+  retry: {
+    match: [
+      Sequelize.ConnectionRefusedError,
+      Sequelize.ConnectionError,
+      Sequelize.ConnectionTimedOutError,
+      Sequelize.TimeoutError,
+      /Deadlock/i],
+    max: 3
   }
+
 });
 
 const db = initModels(sequelize);
