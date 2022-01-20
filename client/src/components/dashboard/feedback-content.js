@@ -1,4 +1,4 @@
-import { Table, Jumbotron } from "react-bootstrap";
+import { Jumbotron, Table } from "react-bootstrap";
 import "../landing.css";
 
 const FeedbackContent = ({ Feedbacks }) => {
