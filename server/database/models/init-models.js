@@ -13,14 +13,14 @@ var _report = require("./report");
 var _today_messages = require("./today_messages");
 
 function initModels(sequelize) {
-  var chat_mapping = _chat_mapping(sequelize, DataTypes);
   var department = _department(sequelize, DataTypes);
-  var event = _event(sequelize, DataTypes);
-  var feedback = _feedback(sequelize, DataTypes);
-  var guardian = _guardian(sequelize, DataTypes);
   var mentee = _mentee(sequelize, DataTypes);
   var mentor = _mentor(sequelize, DataTypes);
+  var guardian = _guardian(sequelize, DataTypes);
   var mentor_mentee = _mentor_mentee(sequelize, DataTypes);
+  var chat_mapping = _chat_mapping(sequelize, DataTypes);
+  var event = _event(sequelize, DataTypes);
+  var feedback = _feedback(sequelize, DataTypes);  
   var mentor_register_info = _mentor_register_info(sequelize, DataTypes);
   var message = _message(sequelize, DataTypes);
   var report = _report(sequelize, DataTypes);
