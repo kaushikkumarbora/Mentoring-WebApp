@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  database:
+    container_name: "mentoring_db"
+    image: "postgres"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    env_file: ./database/.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Mentorship"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mentoring_network
+
+
+  app:
+    container_name: "mentoring_app"
+    build: .
+    networks:
+      - mentoring_network
+    ports:
+      - 8080:8080
+    depends_on:
+      database:
+        condition: service_healthy
+    
+networks:
+  mentoring_network:
