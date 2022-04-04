@@ -20,7 +20,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
       Sequelize.ConnectionTimedOutError,
       Sequelize.TimeoutError,
       /Deadlock/i],
-    max: 3
+    max: 10
   }
 
 });
