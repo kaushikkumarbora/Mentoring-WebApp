@@ -4,12 +4,13 @@ const fs = require('fs')
 
 const method = require('./methods/method')
 const database = require('./database/database');
-const authJwt = require('./methods/auth/authJwt')
+const authJwt = require('./methods/auth/authJwt');
+const db = require('./database/database');
 
 const app = express();
 database.sequelize.sync();
 
-const filepath = path.join(__dirname, '../client/build/');
+const filepath = path.join(__dirname, 'build/');
 console.log('path: ' + filepath);
 
 app.use((req, res, next) => {
@@ -60,7 +61,7 @@ app.post('/status/register', [authJwt.verifyToken, authJwt.verifyUsertype], meth
 
 app.post('/status/recuse', [authJwt.verifyToken, authJwt.verifyUsertype], method.Status.recuse);
 
-app.listen(4000);
+app.listen(8080);
 
 /*
   Todo
