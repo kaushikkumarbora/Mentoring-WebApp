@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs')
+const rateLimit = require("express-rate-limit");
 
 const method = require('./methods/method')
 const database = require('./database/database');
@@ -12,6 +13,14 @@ database.sequelize.sync();
 
 const filepath = path.join(__dirname, 'build/');
 console.log('path: ' + filepath);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // limit each IP to 50 requests per windowMs
+  message: "Too many requests, please try again after 15 minutes"
+});
+
+app.use(limiter);
 
 app.use((req, res, next) => {
   console.log('Debug Middleware: ' + req.path);
