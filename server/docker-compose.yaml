@@ -18,7 +18,9 @@ services:
   app:
     container_name: "mentoring_app"
     build: .
-    env_file: ./database/.env
+    env_file:
+      - ./database/.env
+      - ./methods/auth/.env
     networks:
       - mentoring_network
     ports:
